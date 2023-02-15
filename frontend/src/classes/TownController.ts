@@ -6,7 +6,7 @@ import { io } from 'socket.io-client';
 import TypedEmitter from 'typed-emitter';
 import Interactable from '../components/Town/Interactable';
 import ViewingArea from '../components/Town/interactables/ViewingArea';
-import PosterSesssionArea from '../components/Town/interactables/PosterSessionArea';
+import PosterSessionArea from '../components/Town/interactables/PosterSessionArea';
 import { LoginController } from '../contexts/LoginControllerContext';
 import { TownsService, TownsServiceClient } from '../generated/client';
 import useTownController from '../hooks/useTownController';
@@ -17,6 +17,7 @@ import {
   TownSettingsUpdate,
   ViewingArea as ViewingAreaModel,
   PosterSessionArea as PosterSessionAreaModel,
+  ConversationArea as ConversationAreaModel,
 } from '../types/CoveyTownSocket';
 import { isConversationArea, isViewingArea, isPosterSessionArea } from '../types/TypeUtils';
 import ConversationAreaController from './ConversationAreaController';
@@ -430,7 +431,32 @@ export default class TownController extends (EventEmitter as new () => TypedEmit
      * events (@see ViewingAreaController and @see ConversationAreaController and @see PosterSessionAreaController)
      */
     this._socket.on('interactableUpdate', interactable => {
-      // TODO
+      if (isViewingArea(interactable)) {
+        const viewingArea = this.viewingAreas.find(
+          eachViewingArea => eachViewingArea.id === interactable.id,
+        );
+        if (viewingArea) {
+          viewingArea.updateFrom(interactable);
+        }
+      } else if (isPosterSessionArea(interactable)) {
+        const posterSessionArea = this.posterSessionAreas.find(
+          eachPosterSessionArea => eachPosterSessionArea.id === interactable.id,
+        );
+        if (posterSessionArea) {
+          posterSessionArea.updateFrom(interactable);
+        }
+      } else if (isConversationArea(interactable)) {
+        const conversationArea = this.conversationAreas.find(
+          eachConversationArea => eachConversationArea.id === interactable.id,
+        );
+        if (conversationArea) {
+          const wasEmpty = conversationArea.isEmpty;
+          conversationArea.topic = interactable.topic;
+          if (wasEmpty !== conversationArea.isEmpty) {
+            this.emit('conversationAreasChanged', this.conversationAreas);
+          }
+        }
+      }
     });
   }
 
@@ -613,7 +639,7 @@ export default class TownController extends (EventEmitter as new () => TypedEmit
    * @returns
    */
   public getPosterSessionAreaController(
-    posterSessionArea: PosterSesssionArea,
+    posterSessionArea: PosterSessionArea,
   ): PosterSessionAreaController {
     const existingController = this._posterSessionAreas.find(
       eachExistingArea => eachExistingArea.id === posterSessionArea.name,

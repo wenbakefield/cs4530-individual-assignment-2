@@ -114,21 +114,21 @@ export default class PosterSessionAreaController extends (EventEmitter as new ()
    * The list of IDs of the players who starred the poster (with its current image)
    */
   public get playersWhoStarred(): string[] {
-    throw new Error('Unimplemented');
+    return this._playersWhoStarred;
   }
 
   /**
    * Add the specified player ID to the list of players who starred this poster.
    */
   public addPlayerWhoStarred(playerID: string) {
-    throw new Error('Unimplemented');
+    this._playersWhoStarred.push(playerID);
   }
 
   /**
    * @returns PosterSessionAreaModel that represents the current state of this PosterSessionAreaController
    */
   public posterSessionAreaModel(): PosterSessionAreaModel {
-    throw new Error('Unimplemented');
+    return this._model;
   }
 
   /**

@@ -47,7 +47,8 @@ export default class PosterSessionAreaController extends (EventEmitter as new ()
    */
   constructor(posterSessionAreaModel: PosterSessionAreaModel) {
     super();
-    // TODO
+    this._model = posterSessionAreaModel;
+    this._playersWhoStarred = [];
   }
 
   /**
@@ -56,14 +57,14 @@ export default class PosterSessionAreaController extends (EventEmitter as new ()
    * tied to the same poster session area ID.
    */
   public get id(): string {
-    throw new Error('Unimplemented');
+    return this._model.id;
   }
 
   /**
    * The title of the poster assigned to this area, or undefined if there is not one.
    */
   public get title(): string | undefined {
-    throw new Error('Unimplemented');
+    return this._model.title;
   }
 
   /**
@@ -71,14 +72,15 @@ export default class PosterSessionAreaController extends (EventEmitter as new ()
    *
    */
   public set title(title: string | undefined) {
-    throw new Error('Unimplemented');
+    this._model.title = title;
+    this.emit('posterTitleChange', title);
   }
 
   /**
    * The image of the poster assigned to this area, or undefined if there is not one.
    */
   public get imageContents(): string | undefined {
-    throw new Error('Unimplemented');
+    return this._model.imageContents;
   }
 
   /**
@@ -87,14 +89,15 @@ export default class PosterSessionAreaController extends (EventEmitter as new ()
    * of players who starred the poster.
    */
   public set imageContents(imageContents: string | undefined) {
-    throw new Error('Unimplemented');
+    this._model.imageContents = imageContents;
+    this.emit('posterImageContentsChange', imageContents);
   }
 
   /**
    * The number of stars of the poster assigned to this area.
    */
   public get stars(): number {
-    throw new Error('Unimplemented');
+    return this._model.stars;
   }
 
   /**
@@ -103,7 +106,8 @@ export default class PosterSessionAreaController extends (EventEmitter as new ()
    * Changing this value will emit a ‘posterStarChange' event to listeners
    */
   public set stars(stars: number) {
-    throw new Error('Unimplemented');
+    this._model.stars = stars;
+    this.emit('posterStarChange', stars);
   }
 
   /**

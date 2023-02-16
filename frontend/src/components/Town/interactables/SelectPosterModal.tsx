@@ -11,6 +11,7 @@ import {
   ModalHeader,
   ModalOverlay,
   useToast,
+  UseToastOptions,
 } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { usePosterSessionAreaController } from '../../../classes/TownController';
@@ -70,7 +71,52 @@ export default function SelectPosterModal({
   // found, then don't create the poster.
   // Toast some errors if the poster could not be created.
   const createPoster = useCallback(async () => {
-    // TODO
+    let tempTitle = 'Failed to create poster!';
+    let tempDescription = '';
+    let tempStatus: UseToastOptions['status'] = 'success';
+    if (posterSessionAreaController === undefined) {
+      tempDescription += ' Undefined PosterSessionAreaController.';
+      tempStatus = 'error';
+    }
+    if (title === undefined) {
+      tempDescription += ' Undefined title.';
+      tempStatus = 'error';
+    }
+    if (title === '') {
+      tempDescription += ' Empty title.';
+      tempStatus = 'error';
+    }
+    if (posterFileContents === undefined) {
+      tempDescription += ' Undefined posterFileContents.';
+      tempStatus = 'error';
+    }
+    if (posterFileContents === '') {
+      tempDescription += ' Empty posterFileContents.';
+      tempStatus = 'error';
+    }
+    if (tempStatus === 'success') {
+      const poster: PosterSessionAreaModel = {
+        id: posterSessionAreaController.id,
+        title: title,
+        stars: 0,
+        imageContents: posterFileContents,
+      };
+      try {
+        await coveyTownController.createPosterSessionArea(poster);
+        tempTitle = 'Success!';
+        tempDescription = 'Poster created.';
+      } catch (error) {
+        tempDescription += (error as Error).toString();
+        tempStatus = 'error';
+      }
+    }
+    toast({
+      title: tempTitle,
+      description: tempDescription,
+      status: tempStatus,
+      isClosable: true,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     title,
     posterFileContents,

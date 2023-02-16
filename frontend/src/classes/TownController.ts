@@ -698,7 +698,10 @@ export default class TownController extends (EventEmitter as new () => TypedEmit
   public async getPosterSessionAreaImageContents(
     posterSessionArea: PosterSessionAreaController,
   ): Promise<string> {
-    throw new Error('Unimplemented');
+    if (posterSessionArea.imageContents === undefined) {
+      throw new Error('Undefined image contents!');
+    }
+    return Promise.resolve(posterSessionArea.imageContents);
   }
 
   /**
@@ -709,7 +712,7 @@ export default class TownController extends (EventEmitter as new () => TypedEmit
   public async incrementPosterSessionAreaStars(
     posterSessionArea: PosterSessionAreaController,
   ): Promise<number> {
-    throw new Error('Unimplemented');
+    return Promise.resolve(posterSessionArea.stars++);
   }
 
   /**

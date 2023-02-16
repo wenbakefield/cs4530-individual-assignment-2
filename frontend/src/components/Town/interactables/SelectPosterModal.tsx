@@ -28,7 +28,7 @@ export default function SelectPosterModal({
   posterSessionArea: PosterSessionArea;
 }): JSX.Element {
   const coveyTownController = useTownController();
-  const posterSessionAreController = usePosterSessionAreaController(posterSessionArea?.id);
+  const posterSessionAreaController = usePosterSessionAreaController(posterSessionArea?.id);
 
   const [title, setTitle] = useState<string | undefined>(posterSessionArea?.defaultTitle || '');
   const [posterFileContents, setImageContents] = useState<string | undefined>(undefined);
@@ -76,7 +76,7 @@ export default function SelectPosterModal({
     posterFileContents,
     setTitle,
     coveyTownController,
-    posterSessionAreController,
+    posterSessionAreaController,
     closeModal,
     toast,
   ]);
@@ -90,7 +90,7 @@ export default function SelectPosterModal({
       }}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create a poster in {posterSessionAreController?.id} </ModalHeader>
+        <ModalHeader>Create a poster in {posterSessionAreaController?.id} </ModalHeader>
         <ModalCloseButton />
         <form
           onSubmit={ev => {

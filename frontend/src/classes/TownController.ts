@@ -17,7 +17,6 @@ import {
   TownSettingsUpdate,
   ViewingArea as ViewingAreaModel,
   PosterSessionArea as PosterSessionAreaModel,
-  ConversationArea as ConversationAreaModel,
 } from '../types/CoveyTownSocket';
 import { isConversationArea, isViewingArea, isPosterSessionArea } from '../types/TypeUtils';
 import ConversationAreaController from './ConversationAreaController';

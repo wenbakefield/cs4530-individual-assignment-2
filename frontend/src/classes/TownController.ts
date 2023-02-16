@@ -451,7 +451,12 @@ export default class TownController extends (EventEmitter as new () => TypedEmit
         );
         if (conversationArea) {
           const wasEmpty = conversationArea.isEmpty;
-          conversationArea.topic = interactable.topic;
+          const updatedConversationArea = ConversationAreaController.fromConversationAreaModel(
+            interactable,
+            this.playerFinder,
+          );
+          conversationArea.topic = updatedConversationArea.topic;
+          conversationArea.occupants = updatedConversationArea.occupants;
           if (wasEmpty !== conversationArea.isEmpty) {
             this.emit('conversationAreasChanged', this.conversationAreas);
           }
@@ -459,6 +464,15 @@ export default class TownController extends (EventEmitter as new () => TypedEmit
       }
     });
   }
+
+  /**
+   * A function that exists here because updateFrom is not allowed.
+   * @param playerIDs list of playerIDs
+   * @returns list of PlayerControllers
+   */
+  public playerFinder = (playerIDs: string[]) => {
+    return this._playersInternal.filter(controller => playerIDs.includes(controller.id));
+  };
 
   /**
    * Emit a movement event for the current player, updating the state locally and

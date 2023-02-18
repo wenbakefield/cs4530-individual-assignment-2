@@ -449,14 +449,17 @@ export default class TownController extends (EventEmitter as new () => TypedEmit
           eachConversationArea => eachConversationArea.id === interactable.id,
         );
         if (conversationArea) {
-          const wasEmpty = conversationArea.isEmpty;
+          const oldOccupants = conversationArea.occupants.length;
           const updatedConversationArea = ConversationAreaController.fromConversationAreaModel(
             interactable,
             this.playerFinder,
           );
           conversationArea.topic = updatedConversationArea.topic;
           conversationArea.occupants = updatedConversationArea.occupants;
-          if (wasEmpty !== conversationArea.isEmpty) {
+          if (
+            (oldOccupants === 0 && conversationArea.occupants.length > 0) ||
+            (oldOccupants > 0 && conversationArea.occupants.length === 0)
+          ) {
             this.emit('conversationAreasChanged', this.conversationAreas);
           }
         }

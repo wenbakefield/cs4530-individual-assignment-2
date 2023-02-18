@@ -41,5 +41,42 @@ describe('PosterSessionAreaController', () => {
       testArea.updateFrom(newModel);
       expect(testArea.id).toEqual(existingID);
     });
+    it('Updates the title property', () => {
+      const newTitle = nanoid();
+      const newModel: PosterSessionArea = {
+        id: testAreaModel.id,
+        title: newTitle,
+        imageContents: testAreaModel.imageContents,
+        stars: testAreaModel.stars,
+      };
+      testArea.updateFrom(newModel);
+      expect(testArea.title).toEqual(newTitle);
+      expect(mockListeners.posterTitleChange).toBeCalledTimes(1);
+    });
+    it('Updates the imageContents property', () => {
+      const newImageContents = nanoid();
+      const newModel: PosterSessionArea = {
+        id: testAreaModel.id,
+        title: testAreaModel.title,
+        imageContents: newImageContents,
+        stars: testAreaModel.stars,
+      };
+      testArea.updateFrom(newModel);
+      expect(testArea.imageContents).toEqual(newImageContents);
+      expect(mockListeners.posterImageContentsChange).toBeCalledTimes(1);
+    });
+
+    it('Updates the stars property', () => {
+      const newStars = testAreaModel.stars + 1;
+      const newModel: PosterSessionArea = {
+        id: testAreaModel.id,
+        title: testAreaModel.title,
+        imageContents: testAreaModel.imageContents,
+        stars: newStars,
+      };
+      testArea.updateFrom(newModel);
+      expect(testArea.stars).toEqual(newStars);
+      expect(mockListeners.posterStarChange).toBeCalledTimes(1);
+    });
   });
 });

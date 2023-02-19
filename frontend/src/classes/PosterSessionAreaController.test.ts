@@ -51,7 +51,7 @@ describe('PosterSessionAreaController', () => {
       };
       testArea.updateFrom(newModel);
       expect(testArea.title).toEqual(existingTitle);
-      expect(mockListeners.posterTitleChange).toBeCalledTimes(0);
+      expect(mockListeners.posterTitleChange).not.toBeCalled();
     });
     it('Does not update the imageContents property', () => {
       const existingImageContents = testArea.imageContents;
@@ -63,7 +63,7 @@ describe('PosterSessionAreaController', () => {
       };
       testArea.updateFrom(newModel);
       expect(testArea.imageContents).toEqual(existingImageContents);
-      expect(mockListeners.posterImageContentsChange).toBeCalledTimes(0);
+      expect(mockListeners.posterImageContentsChange).not.toBeCalled();
     });
 
     it('Does not update the stars property', () => {
@@ -76,7 +76,7 @@ describe('PosterSessionAreaController', () => {
       };
       testArea.updateFrom(newModel);
       expect(testArea.stars).toEqual(existingStars);
-      expect(mockListeners.posterStarChange).toBeCalledTimes(0);
+      expect(mockListeners.posterStarChange).not.toBeCalled();
     });
     it('Updates the title property', () => {
       const newTitle = nanoid();

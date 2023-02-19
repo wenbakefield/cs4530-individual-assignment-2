@@ -72,8 +72,10 @@ export default class PosterSessionAreaController extends (EventEmitter as new ()
    *
    */
   public set title(title: string | undefined) {
-    this._model.title = title;
-    this.emit('posterTitleChange', title);
+    if (this._model.title !== title) {
+      this._model.title = title;
+      this.emit('posterTitleChange', title);
+    }
   }
 
   /**
@@ -89,8 +91,10 @@ export default class PosterSessionAreaController extends (EventEmitter as new ()
    * of players who starred the poster.
    */
   public set imageContents(imageContents: string | undefined) {
-    this._model.imageContents = imageContents;
-    this.emit('posterImageContentsChange', imageContents);
+    if (this._model.imageContents !== imageContents) {
+      this._model.imageContents = imageContents;
+      this.emit('posterImageContentsChange', imageContents);
+    }
   }
 
   /**
@@ -106,8 +110,10 @@ export default class PosterSessionAreaController extends (EventEmitter as new ()
    * Changing this value will emit a ‘posterStarChange' event to listeners
    */
   public set stars(stars: number) {
-    this._model.stars = stars;
-    this.emit('posterStarChange', stars);
+    if (this._model.stars !== stars) {
+      this._model.stars = stars;
+      this.emit('posterStarChange', stars);
+    }
   }
 
   /**
